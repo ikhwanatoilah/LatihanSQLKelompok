@@ -4,11 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Data implements Parcelable {
-    int no;
+    int nomor;
     String nama,tgl,jenkel,alamat;
 
-    public int getNo(){return no;}
-    public void setNo(int no){this.no = no;}
+    public int getNo(){return nomor;}
+    public void setNo(int no){this.nomor = nomor;}
 
     public String getNama(){return nama;}
     public void setNama(String nama){this.nama = nama;}
@@ -30,7 +30,7 @@ public class Data implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.no);
+        dest.writeInt(this.nomor);
         dest.writeString(this.tgl);
         dest.writeString(this.nama);
         dest.writeString(this.jenkel);
@@ -40,7 +40,7 @@ public class Data implements Parcelable {
     }
 
     protected Data(Parcel in) {
-        this.no = in.readInt();
+        this.nomor = in.readInt();
         this.tgl = in.readString();
         this.nama = in.readString();
         this.jenkel = in.readString();
