@@ -4,24 +4,56 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Data implements Parcelable {
-    int nomor;
-    String nama,tgl,jenkel,alamat;
+    String nama,jeniskelamin,alamat,tanggal;
+    int no;
 
-    public int getNo(){return nomor;}
-    public void setNo(int no){this.nomor = nomor;}
+    public Data() {
+        this.nama = nama;
+        this.jeniskelamin = jeniskelamin;
+        this.alamat = alamat;
+        this.no = no;
+        this.tanggal = tanggal;
+    }
 
-    public String getNama(){return nama;}
-    public void setNama(String nama){this.nama = nama;}
+    public String getNama() {
+        return nama;
+    }
 
-    public String getTgl(){return tgl;}
-    public void setTgl(String tgl){this.tgl = tgl;}
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 
-    public String getJenkel(){return jenkel;}
-    public void setJenkel(String jenkel){this.jenkel = jenkel;}
+    public String getJeniskelamin() {
+        return jeniskelamin;
+    }
 
-    public String getAlamat(){return alamat;}
-    public void setAlamat(String alamat){this.alamat = alamat;}
+    public void setJeniskelamin(String jeniskelamin) {
+        this.jeniskelamin = jeniskelamin;
+    }
 
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public int getNo() {
+        return no;
+    }
+
+    public void setNo(int no) {
+        this.no = no;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
 
     @Override
     public int describeContents() {
@@ -30,24 +62,22 @@ public class Data implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.nomor);
-        dest.writeString(this.tgl);
-        dest.writeString(this.nama);
-        dest.writeString(this.jenkel);
-        dest.writeString(this.alamat);
-    }
-    public Data() {
+        dest.writeString (this.nama);
+        dest.writeString (this.jeniskelamin);
+        dest.writeString (this.alamat);
+        dest.writeString (this.tanggal);
+        dest.writeInt (this.no);
     }
 
     protected Data(Parcel in) {
-        this.nomor = in.readInt();
-        this.tgl = in.readString();
-        this.nama = in.readString();
-        this.jenkel = in.readString();
-        this.alamat = in.readString();
+        this.nama = in.readString ();
+        this.jeniskelamin = in.readString ();
+        this.alamat = in.readString ();
+        this.tanggal = in.readString ();
+        this.no = in.readInt ();
     }
 
-    public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
+    public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data> () {
         @Override
         public Data createFromParcel(Parcel source) {
             return new Data(source);

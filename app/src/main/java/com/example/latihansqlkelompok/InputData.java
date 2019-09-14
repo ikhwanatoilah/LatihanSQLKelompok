@@ -1,79 +1,85 @@
 package com.example.latihansqlkelompok;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class InputData extends AppCompatActivity {
-    EditText edtnomor,edtnama,edttanggal,edtjenkel,edtalamat;
-    ImageButton btnsubmit;
-    TextView simpan;
-    Context context;
-    Data data;
-    Integer nomor;
-    String aksi = "Submit";
+    public static String EXTRA_PERSON = " extra_person";
+    public static String ACTION = "Insert";
+
+    protected OnBackPressedListener onBackPressedListener;
+
+    public interface OnBackPressedListener {
+        void doBack();
+    }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null)
+            onBackPressedListener.doBack();
+        else
+            super.onBackPressed();
+    }
+
+    EditText no,nama,alamat,jk,tanggal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_data);
-        context = this;
+        setContentView(R.layout.form_tambah);
 
-        aksi = getIntent().getStringExtra("UPDATE");
-        data = getIntent().getParcelableExtra("UPDATE_INTENT");
-        if(aksi == null){
-            aksi = "Submit";
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        no = findViewById (R.id.tambahNo);
+        nama = findViewById (R.id.tambahNama);
+        alamat = findViewById (R.id.tambahAlamat);
+        jk = findViewById (R.id.tambahJk);
+        tanggal = findViewById (R.id.tambahTanggal);
+
+        if(getIntent().hasExtra("Update")) {
+            Data data = getIntent ().getParcelableExtra (EXTRA_PERSON);
+            no.setText (data.getNo ()+"");
+            nama.setText (data.getNama ()+"");
+            alamat.setText (data.getAlamat ()+"");
+            tanggal.setText (data.getTanggal ()+"");
+            jk.setText (data.getJeniskelamin ()+"");
+        }
+
+
+
+    }
+
+    public void simpanData(View view) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        Data currentData = new Data();
+
+        if(!getIntent().hasExtra("Update")) {
+            currentData.setNo(Integer.parseInt(no.getText().toString()));
+            currentData.setNama (nama.getText().toString ());
+            currentData.setAlamat (alamat.getText().toString ());
+            currentData.setJeniskelamin (jk.getText().toString ());
+            currentData.setTanggal (tanggal.getText().toString ());
+            db.insert(currentData);
         }else{
-            nomor = data.getNo();
+            currentData.setNo(Integer.parseInt(no.getText().toString()));
+            currentData.setNama (nama.getText().toString ());
+            currentData.setAlamat (alamat.getText().toString ());
+            currentData.setJeniskelamin (jk.getText().toString ());
+            currentData.setTanggal (tanggal.getText().toString ());
+            db.update(currentData);
         }
-
-        edtnomor = findViewById(R.id.nomor);
-        edtnama = findViewById(R.id.nama);
-        edttanggal = findViewById(R.id.tanggal);
-        edtjenkel = findViewById(R.id.kelamin);
-        edtalamat = findViewById(R.id.alamat);
-        simpan = findViewById(R.id.btn_simpan);
-        if (aksi.equals("Update")){
-            simpan.setText("Update");
-            edtnomor.setText(nomor);
-            edtnomor.setFocusable(false);
-            edtnama.setText(data.getNama());
-            edttanggal.setText(data.getTgl());
-            edtjenkel.setText(data.getJenkel());
-            edtalamat.setText(data.getAlamat());
-        }
-        btnsubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseHelper db = new DatabaseHelper(context);
-                Data data = new Data();
-                String label = String.valueOf(simpan.getText());
-                if (label.equals("SIMPAN")){
-                    data.setNo(Integer.parseInt(edtnomor.getText().toString()));
-                    data.setNama(edtnama.getText().toString());
-                    data.setTgl(edttanggal.getText().toString());
-                    data.setJenkel(edtjenkel.getText().toString());
-                    data.setAlamat(edtalamat.getText().toString());
-                    db.insert(data);
-                    Intent move = new Intent(context,MainActivity.class);
-                    context.startActivity(move);
-                }
-                if (label.equals("Update")){
-                    data.setNo(Integer.parseInt(edtnomor.getText().toString()));
-                    data.setNama(edtnama.getText().toString());
-                    data.setTgl(edttanggal.getText().toString());
-                    data.setJenkel(edtjenkel.getText().toString());
-                    data.setAlamat(edtalamat.getText().toString());
-                    db.update(data);
-                    Intent move = new Intent(context,MainActivity.class);
-                    context.startActivity(move);
-                }
-            }
-        });
+        Intent simpanData = new Intent(InputData.this, DaftarNama.class);
+        startActivity(simpanData);
     }
 }

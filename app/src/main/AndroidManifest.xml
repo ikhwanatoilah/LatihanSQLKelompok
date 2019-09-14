@@ -9,17 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".DetailData"></activity>
+        <activity android:name=".Informasi" />
+        <activity android:name=".InputData" />
+        <activity android:name=".DaftarNama" ></activity>
+
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".InputData"/>
-        <activity android:name=".detail_data"/>
-        <activity android:name=".SplashScreen">
 
+        </activity>
+        <activity android:name=".MainActivity" >
         </activity>
     </application>
 
